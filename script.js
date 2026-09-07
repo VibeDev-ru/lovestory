@@ -387,7 +387,7 @@ console.log('📦 Загрузка script.js...');
       if (page.img) {
         photoHTML = `
           <div class="polaroid book-polaroid">
-            <img src="${page.img}" alt="${page.title}" loading="lazy" style="max-width:100px; height:auto; aspect-ratio:4/3; display:block; border:2px solid #D5C8B8; border-radius:2px;">
+            <img src="${page.img}" alt="${page.title}" loading="lazy" style="max-width:200px; height:auto; aspect-ratio:4/3; display:block; border:2px solid #D5C8B8; border-radius:2px;">
           </div>
         `;
       }
