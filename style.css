@@ -781,6 +781,32 @@ html, body {
 .photo-frame--final { width: min(72vw, 300px); aspect-ratio: 1 / 1; }
 .final-message { font-size: 15px; line-height: 1.7; color: var(--ink-soft); max-width: 340px; margin: 0; }
 
+/* ===== СЧЁТЧИК ВРЕМЕНИ ===== */
+.time-counter {
+  margin-top: 20px;
+  padding: 16px 24px;
+  background: rgba(255, 248, 240, 0.6);
+  border-radius: 16px;
+  border: 1px solid var(--gold);
+  width: 100%;
+  max-width: 360px;
+}
+
+.time-counter__label {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin: 0 0 4px;
+}
+
+.time-counter__value {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--gold);
+  margin: 0;
+}
+
 /* ===== ТЕЛЕФОНЫ ===== */
 @media (max-width: 480px) {
   .screen__inner { padding: 2vh 4vw; }
@@ -796,7 +822,8 @@ html, body {
   .gift-node .heart-icon { width: 20px; height: 20px; }
   .level-memory { font-size: 14px; }
   .envelope-wrapper { width: 220px; height: 160px; }
-  .letter__text { font-size: 14px; line-height: 1.6; max-height: 140px; }
+  .letter-full__text { font-size: 16px; }
+  .letter-full__content { padding: 24px 16px; }
   .envelope__heart { font-size: 24px; }
   .book {
     aspect-ratio: 3 / 4;
@@ -820,5 +847,11 @@ html, body {
   }
   .book__nav {
     padding: 8px 12px;
+  }
+  .time-counter {
+    padding: 12px 16px;
+  }
+  .time-counter__value {
+    font-size: 20px;
   }
 }

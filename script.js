@@ -249,7 +249,7 @@ console.log('📦 Загрузка script.js...');
     }
   });
 
-    // ===== СЕКРЕТНЫЙ КОНВЕРТ =====
+  // ===== СЕКРЕТНЫЙ КОНВЕРТ =====
   let envelopeOpened = false;
 
   function showEnvelope() {
@@ -344,7 +344,6 @@ console.log('📦 Загрузка script.js...');
   }
 
   document.getElementById('btn-see-final').addEventListener('click', function() {
-    // Сначала показываем книгу, а не финал
     initBook();
     showScreen('book');
   });
@@ -404,7 +403,6 @@ console.log('📦 Загрузка script.js...');
     document.getElementById('bookPrev').style.display = bookCurrentPage === 0 ? 'none' : 'inline-block';
     document.getElementById('bookNext').style.display = bookCurrentPage === total - 1 ? 'none' : 'inline-block';
     
-    // Показываем кнопку "Закрыть книгу" только на последней странице
     document.getElementById('bookCloseBtn').style.display = bookCurrentPage === total - 1 ? 'inline-block' : 'none';
   }
 
@@ -438,10 +436,44 @@ console.log('📦 Загрузка script.js...');
   });
 
   document.getElementById('bookCloseBtn').addEventListener('click', function() {
-    // Закрываем книгу и показываем финал
     renderFinal();
     showScreen('final');
   });
+
+  // ===== СЧЁТЧИК ВРЕМЕНИ =====
+  function getTimeTogether() {
+    const startDate = new Date(2023, 8, 21);
+    const now = new Date();
+    
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    let days = now.getDate() - startDate.getDate();
+    
+    if (days < 0) {
+      months--;
+      const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+    
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+    
+    const yearWord = years % 10 === 1 && years % 100 !== 11 ? 'год' : 
+                     (years % 10 >= 2 && years % 10 <= 4 && !(years % 100 >= 12 && years % 100 <= 14) ? 'года' : 'лет');
+    const monthWord = months % 10 === 1 && months % 100 !== 11 ? 'месяц' : 
+                      (months % 10 >= 2 && months % 10 <= 4 && !(months % 100 >= 12 && months % 100 <= 14) ? 'месяца' : 'месяцев');
+    const dayWord = days % 10 === 1 && days % 100 !== 11 ? 'день' : 
+                    (days % 10 >= 2 && days % 10 <= 4 && !(days % 100 >= 12 && days % 100 <= 14) ? 'дня' : 'дней');
+    
+    let result = '';
+    if (years > 0) result += `${years} ${yearWord} `;
+    if (months > 0) result += `${months} ${monthWord} `;
+    result += `${days} ${dayWord}`;
+    
+    return result;
+  }
 
   // ===== ФИНАЛ =====
   function renderFinal() {
@@ -450,6 +482,12 @@ console.log('📦 Загрузка script.js...');
     if (frame && img) { setPhoto(frame, img, CONFIG.giftImage, `Добавь файл\n${CONFIG.giftImage}`); }
     document.getElementById('finalTitle').textContent = CONFIG.finalTitle.replace('{name}', CONFIG.girlName);
     document.getElementById('finalMessage').textContent = CONFIG.finalMessage;
+    
+    const timeTogether = getTimeTogether();
+    const counterEl = document.getElementById('timeCounter');
+    if (counterEl) {
+      counterEl.textContent = timeTogether;
+    }
   }
 
   // ===== ЗВЁЗДЫ =====
