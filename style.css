@@ -78,6 +78,7 @@ html, body {
   transform: scale(1);
 }
 
+/* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
 .screen__inner {
   max-width: 480px;
   width: 100%;
@@ -89,10 +90,28 @@ html, body {
   min-height: 100%;
 }
 
-.screen__inner--map {
-  max-width: 560px;
+/* ===== УРОВЕНЬ: кнопка всегда видна ===== */
+.screen__inner--level {
+  max-width: 420px;
+  padding: 2vh 4vw 80px 4vw; /* отступ снизу для кнопки */
   justify-content: flex-start;
-  padding-top: 2vh;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 100%;
+  position: relative;
+}
+.screen__inner--level .screen-footer {
+  margin-top: auto; /* прижимаем кнопку к низу */
+  padding-top: 16px;
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  background: inherit;
+  z-index: 5;
+}
+.screen__inner--level .screen-footer .btn {
+  width: 100%;
+  min-width: unset;
 }
 
 .title-serif {
@@ -408,8 +427,6 @@ html, body {
 }
 
 /* ===== УРОВЕНЬ ===== */
-.screen__inner--level { max-width: 420px; padding-top: 2vh; }
-
 .level-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
 .level-counter { font-family: var(--serif); font-size: 20px; color: var(--gold); }
 .level-caption { font-size: 18px; font-weight: 500; color: var(--ink); }
@@ -455,7 +472,10 @@ html, body {
   transition: opacity 0.6s var(--ease), max-height 0.6s var(--ease);
   width: 100%;
 }
-.level-answer.is-visible { opacity: 1; max-height: 400px; }
+.level-answer.is-visible {
+  opacity: 1;
+  max-height: 600px; /* увеличил, чтобы текст влезал */
+}
 
 .level-memory {
   font-size: 15px;
@@ -695,10 +715,6 @@ html, body {
   flex-shrink: 0;
 }
 
-<<<<<<< HEAD
-=======
-/* ===== РАЗМЕР ФОТО В КНИГЕ — 300px ===== */
->>>>>>> 7e3383902db318ea37ce8c40ff4fa334e57489be
 .book-polaroid {
   max-width: 300px !important;
   margin: 0 auto 8px !important;
@@ -740,7 +756,6 @@ html, body {
   color: #C95A5A;
 }
 
-/* ===== НАВИГАЦИЯ КНИГИ — ВСЕГДА ВИДИМА ===== */
 .book__nav {
   position: absolute;
   bottom: 0;
@@ -898,6 +913,7 @@ html, body {
 /* ===== ТЕЛЕФОНЫ ===== */
 @media (max-width: 480px) {
   .screen__inner { padding: 2vh 4vw; }
+  .screen__inner--level { padding: 2vh 4vw 70px 4vw; }
   .title-serif { font-size: clamp(22px, 5vw, 28px); }
   .subtitle { font-size: 14px; margin-bottom: 16px; }
   .btn { font-size: 14px; padding: 12px 20px; }
