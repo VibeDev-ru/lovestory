@@ -41,7 +41,6 @@ console.log('📦 Загрузка script.js...');
     document.getElementById('btn-start').addEventListener('click', () => { buildMap(); showScreen('map'); });
   }
 
-  // ===== 14 ТОЧЕК В ПРОЦЕНТАХ =====
   const NODE_COORDS = [
     { x: 50, y: 5 }, { x: 73, y: 8 }, { x: 79, y: 15 }, { x: 78, y: 23 },
     { x: 69, y: 30 }, { x: 55, y: 36 }, { x: 39, y: 42 }, { x: 28, y: 50 },
@@ -50,6 +49,7 @@ console.log('📦 Загрузка script.js...');
   ];
 
   let mapNodes = [];
+  let activeLine = null;
 
   function buildMap() {
     console.log('🗺️ buildMap()');
@@ -64,6 +64,7 @@ console.log('📦 Загрузка script.js...');
     const viewBoxWidth = 600;
     const viewBoxHeight = 900;
 
+    // Строим путь
     let pathD = '';
     NODE_COORDS.forEach((p, i) => {
       const x = (p.x / 100) * viewBoxWidth;
@@ -74,6 +75,7 @@ console.log('📦 Загрузка script.js...');
 
     svg.querySelectorAll('.map-line').forEach(el => el.remove());
 
+    // Фоновая линия (всегда видна)
     const bgLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     bgLine.setAttribute('d', pathD);
     bgLine.setAttribute('stroke', 'rgba(201, 169, 110, 0.25)');
@@ -84,7 +86,8 @@ console.log('📦 Загрузка script.js...');
     bgLine.classList.add('map-line');
     svg.appendChild(bgLine);
 
-    const activeLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    // Активная линия (прогресс)
+    activeLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     activeLine.setAttribute('d', pathD);
     activeLine.setAttribute('stroke', '#C9A96E');
     activeLine.setAttribute('stroke-width', '4');
@@ -97,6 +100,7 @@ console.log('📦 Загрузка script.js...');
     activeLine.classList.add('map-line');
     svg.appendChild(activeLine);
 
+    // Кнопки
     CONFIG.levels.forEach((level, i) => {
       const p = NODE_COORDS[i] || NODE_COORDS[NODE_COORDS.length - 1];
       const node = document.createElement('div');
@@ -119,19 +123,32 @@ console.log('📦 Загрузка script.js...');
     const total = CONFIG.levels.length;
     const completed = completedLevels.length;
 
+    // Обновляем состояние кнопок
     mapNodes.forEach((node, i) => {
       node.classList.remove('map-node--available', 'map-node--done', 'map-node--locked', 'map-node--current');
-      if (completedLevels.includes(i)) { node.classList.add('map-node--done'); }
-      else if (i === completed) { node.classList.add('map-node--available'); node.classList.add('map-node--current'); }
-      else { node.classList.add('map-node--locked'); }
+      if (completedLevels.includes(i)) {
+        node.classList.add('map-node--done');
+      } else if (i === completed) {
+        node.classList.add('map-node--available');
+        node.classList.add('map-node--current');
+      } else {
+        node.classList.add('map-node--locked');
+      }
     });
 
-    const activeLine = document.getElementById('mapActiveLine');
+    // ОБНОВЛЯЕМ АКТИВНУЮ ЛИНИЮ
     if (activeLine) {
-      const progress = completed / total;
-      const totalLength = 2000;
-      const offset = totalLength - progress * totalLength;
+      // Вычисляем, сколько отрезков пройдено
+      const totalSegments = total - 1; // количество отрезков между точками
+      const completedSegments = Math.min(completed, totalSegments);
+      
+      // Длина одного отрезка в процентах от общей длины
+      const segmentLength = 2000 / totalSegments;
+      const offset = 2000 - (completedSegments * segmentLength);
+      
       activeLine.setAttribute('stroke-dashoffset', offset);
+      
+      console.log(`📊 Линия: пройдено ${completed}/${total} уровней, offset: ${offset}`);
     }
   }
 
@@ -171,8 +188,6 @@ console.log('📦 Загрузка script.js...');
     const continueBtn = document.getElementById('btn-level-continue');
 
     if (answerEl) answerEl.classList.remove('is-visible');
-
-    // Убираем старые обработчики, чтобы не накапливались
     optionsEl.innerHTML = '';
     optionsEl.style.display = 'none';
 
@@ -186,9 +201,7 @@ console.log('📦 Загрузка script.js...');
         btn.textContent = opt;
         btn.dataset.index = i;
         
-        // НАДЁЖНАЯ ЛОГИКА ПРОВЕРКИ
         btn.addEventListener('click', function(e) {
-          // Если кнопка уже нажата и заблокирована — игнорируем
           if (this.disabled) return;
           
           const selectedIndex = parseInt(this.dataset.index);
@@ -196,29 +209,24 @@ console.log('📦 Загрузка script.js...');
           
           console.log(`Выбран вариант: ${selectedIndex}, Правильный: ${correctIndex}`);
           
-          // Блокируем все кнопки
           document.querySelectorAll('.level-options .btn').forEach(b => b.disabled = true);
           
           if (selectedIndex === correctIndex) {
-            // ПРАВИЛЬНЫЙ ОТВЕТ
             console.log('✅ Правильно!');
             this.classList.add('btn--correct');
             memoryEl.textContent = level.memory;
             answerEl.classList.add('is-visible');
             continueBtn.style.display = 'inline-block';
           } else {
-            // НЕПРАВИЛЬНЫЙ ОТВЕТ
             console.log('❌ Неправильно!');
             this.classList.add('btn--wrong');
             
-            // Показываем подсказку
             const errorDiv = document.createElement('div');
             errorDiv.className = 'level-error-hint';
             errorDiv.style.cssText = 'color: #C95A5A; font-size: 14px; margin-top: 8px; font-style: italic;';
             errorDiv.textContent = 'Котенок, не расстраивайся, попробуй еще раз ❤️';
             this.parentElement.appendChild(errorDiv);
             
-            // Через 1.5 секунды разблокируем кнопки и убираем подсказку
             setTimeout(() => {
               document.querySelectorAll('.level-options .btn').forEach(b => {
                 b.disabled = false;
