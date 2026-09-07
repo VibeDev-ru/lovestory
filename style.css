@@ -15,7 +15,13 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body { height: 100%; overflow: hidden; background: var(--cream); color: var(--ink); font-family: var(--sans); }
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--sans);
+}
 
 .stage {
   position: relative;
@@ -26,6 +32,7 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
   background: radial-gradient(120% 140% at 50% 0%, #FFFDFB, var(--cream) 45%, var(--pink) 130%);
 }
 
+/* ===== СТАРТ ===== */
 .screen {
   position: absolute;
   inset: 0;
@@ -121,6 +128,34 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
 }
 .btn--ghost:hover { background: rgba(201, 169, 110, 0.12); transform: translateY(-2px); }
 
+/* ===== СТАРТОВЫЙ ЭКРАН ===== */
+#start-greeting .name {
+  display: inline-block;
+  animation: typewriter 2s steps(30) 1s both;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--gold);
+  max-width: 0;
+  animation-fill-mode: forwards;
+}
+@keyframes typewriter {
+  from { max-width: 0; }
+  to { max-width: 100%; }
+}
+#start-subtitle {
+  opacity: 0;
+  animation: fade-up 0.8s 3.5s both;
+}
+#btn-start {
+  opacity: 0;
+  animation: fade-up 0.8s 4.2s both;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* ===== КАРТА ===== */
 .map-wrapper {
   position: relative;
@@ -186,12 +221,24 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
   background: var(--gold);
   border-color: var(--gold);
   color: white;
+  animation: pulse-node 1.2s infinite;
+}
+
+@keyframes pulse-node {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 0 0 rgba(201, 169, 110, 0.5); }
+  50% { transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 20px rgba(201, 169, 110, 0.8); }
 }
 
 .map-node--done {
   background: var(--blue);
   border-color: var(--blue);
   color: white;
+  animation: pop-in 0.4s ease;
+}
+@keyframes pop-in {
+  0% { transform: translate(-50%, -50%) scale(0.5); }
+  70% { transform: translate(-50%, -50%) scale(1.3); }
+  100% { transform: translate(-50%, -50%) scale(1); }
 }
 
 .map-node--locked {
@@ -204,11 +251,6 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
 
 .map-node--current {
   animation: pulse-node 1.2s infinite;
-}
-
-@keyframes pulse-node {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.2); }
 }
 
 .map-legend {
@@ -296,9 +338,18 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
   border: 1.5px solid var(--beige);
   border-radius: 12px;
   color: var(--ink);
+  transition: all 0.3s ease;
 }
-.level-options .btn--correct { border-color: var(--blue); background: rgba(110, 133, 166, 0.15); }
-.level-options .btn--wrong { border-color: #C95A5A; background: rgba(201, 90, 90, 0.10); }
+.level-options .btn:hover:not(:disabled) { border-color: var(--gold); box-shadow: 0 0 12px rgba(201, 169, 110, 0.3); }
+.level-options .btn--correct { border-color: var(--blue); background: rgba(110, 133, 166, 0.15); animation: pop-in 0.3s ease; }
+.level-options .btn--wrong { border-color: #C95A5A; background: rgba(201, 90, 90, 0.10); animation: shake 0.5s ease; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
 
 .level-answer {
   opacity: 0;
@@ -318,6 +369,11 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
   background: rgba(255, 248, 240, 0.5);
   border-radius: 12px;
   border-left: 3px solid var(--gold);
+  animation: ink-appear 0.8s ease;
+}
+@keyframes ink-appear {
+  from { opacity: 0; filter: blur(4px); }
+  to { opacity: 1; filter: blur(0); }
 }
 
 /* ===== ПОДАРКИ ===== */
@@ -352,6 +408,14 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
 @keyframes pop-in {
   from { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
   to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.gift-node {
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-8px); }
 }
 
 .heart-field.has-choice .gift-node:not(.is-chosen) {
@@ -399,4 +463,23 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
   .gift-node { width: 40px; height: 40px; }
   .gift-node .heart-icon { width: 20px; height: 20px; }
   .level-memory { font-size: 14px; }
+#stars-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  animation: twinkle 2s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 0.8; transform: scale(1.5); }
 }

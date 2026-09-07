@@ -328,7 +328,22 @@ console.log('📦 Загрузка script.js...');
     console.log('🚀 DOM загружен');
     initStart();
   });
-
+  function createStars() {
+    const container = document.getElementById('stars-container');
+    if (!container) return;
+    for (let i = 0; i < 30; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.width = (2 + Math.random() * 4) + 'px';
+      star.style.height = star.style.width;
+      star.style.animationDelay = (Math.random() * 3) + 's';
+      star.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+      container.appendChild(star);
+    }
+  }
+  createStars();
 })();
 
 console.log('✅ script.js загружен');
