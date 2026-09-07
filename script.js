@@ -447,7 +447,7 @@ console.log('📦 Загрузка script.js...');
     
     bookCurrentPage = 0;
     updateBookNav();
-    document.getElementById('bookCloseBtn').style.display = 'none';
+    document.getElementById('bookCloseBtn').style.display = 'inline-block';
   }
 
   function updateBookNav() {
@@ -456,7 +456,12 @@ console.log('📦 Загрузка script.js...');
     document.getElementById('bookPrev').style.display = bookCurrentPage === 0 ? 'none' : 'inline-block';
     document.getElementById('bookNext').style.display = bookCurrentPage === total - 1 ? 'none' : 'inline-block';
     
-    document.getElementById('bookCloseBtn').style.display = bookCurrentPage === total - 1 ? 'inline-block' : 'none';
+    document.getElementById('bookCloseBtn').style.display = 'inline-block';
+    if (bookCurrentPage === total - 1) {
+      document.getElementById('bookCloseBtn').textContent = 'Закрыть книгу';
+    } else {
+      document.getElementById('bookCloseBtn').textContent = 'Перейти к финалу';
+    }
   }
 
   function goToPage(index) {

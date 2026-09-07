@@ -660,7 +660,7 @@ html, body {
 .book-page {
   position: absolute;
   inset: 0;
-  padding: 14px 14px 44px 14px;
+  padding: 14px 14px 60px 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -695,9 +695,8 @@ html, body {
   flex-shrink: 0;
 }
 
-/* ===== РАЗМЕР ФОТО В КНИГЕ (НАСТРОЙКА) ===== */
 .book-polaroid {
-  max-width: 180px !important;
+  max-width: 300px !important;
   margin: 0 auto 8px !important;
 }
 
@@ -737,29 +736,33 @@ html, body {
   color: #C95A5A;
 }
 
+/* ===== НАВИГАЦИЯ КНИГИ — ВСЕГДА ВИДИМА ===== */
 .book__nav {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   gap: 16px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   background: rgba(247, 240, 230, 0.95);
   border-top: 1px solid #D5C8B8;
-  z-index: 5;
+  z-index: 20 !important;
+  pointer-events: auto !important;
 }
 
 .book__nav-btn {
-  min-width: 40px;
-  padding: 4px 10px;
-  font-size: 16px;
+  min-width: 44px;
+  padding: 6px 12px;
+  font-size: 18px;
   background: transparent;
-  border: 1px solid #8B7355;
+  border: 1.5px solid #8B7355;
   border-radius: 30px;
   color: #3A2A1A;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .book__nav-btn:hover {
@@ -768,14 +771,16 @@ html, body {
 
 .book__nav-counter {
   font-family: 'Georgia', serif;
-  font-size: 13px;
+  font-size: 14px;
   color: #5A4A3A;
   min-width: 50px;
   text-align: center;
 }
 
 #bookCloseBtn {
-  display: none;
+  margin-top: 12px;
+  display: inline-block !important;
+  min-width: 160px;
 }
 
 /* ===== ПОДАРКИ ===== */
@@ -906,14 +911,15 @@ html, body {
   .letter-full__content { padding: 24px 16px; }
   .envelope__heart { font-size: 24px; }
   .book { aspect-ratio: 3 / 4; padding: 6px; }
-  .book-page { padding: 10px 10px 38px 10px; }
+  .book-page { padding: 10px 10px 50px 10px; }
   .book-page__title { font-size: 18px; }
-  .book-polaroid { max-width: 120px !important; }
+  .book-polaroid { max-width: 200px !important; }
   .book-page__text { font-size: 11px; line-height: 1.4; min-height: 40px; }
   .book-page__text ul { font-size: 11px; line-height: 1.6; }
-  .book__nav { padding: 6px 10px; }
-  .book__nav-btn { min-width: 34px; padding: 3px 8px; font-size: 14px; }
+  .book__nav { padding: 6px 10px; gap: 10px; }
+  .book__nav-btn { min-width: 36px; padding: 4px 8px; font-size: 14px; }
   .book__nav-counter { font-size: 12px; min-width: 40px; }
+  #bookCloseBtn { font-size: 13px; padding: 8px 16px; min-width: 120px; }
   .time-counter { padding: 10px 14px; }
   .time-counter__value { font-size: 18px; }
   .btn-start-neon { font-size: 15px; height: 2.4em; padding-right: 2.8em; }
