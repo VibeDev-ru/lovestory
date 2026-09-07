@@ -1,0 +1,1 @@
+Сюда клади фото: level1.jpg, level2.jpg, level3.jpg, level4.jpg, gift.jpg — см. README.md в корне проекта

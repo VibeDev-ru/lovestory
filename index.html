@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Карта нашей памяти</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="stage" id="stage">
+
+  <!-- ЭКРАН 1 — СТАРТ -->
+  <section class="screen screen--start is-active" data-screen="start">
+    <div class="screen__inner">
+      <h1 class="title-serif" id="start-greeting">Привет, <span class="name"></span></h1>
+      <p class="subtitle" id="start-subtitle"></p>
+      <button class="btn btn--primary" id="btn-start">Начать путешествие</button>
+    </div>
+  </section>
+
+  <!-- ЭКРАН 2 — КАРТА -->
+<section class="screen screen--map" data-screen="map">
+  <div class="screen__inner screen__inner--map">
+    <h2 class="title-serif title-serif--sm">Карта памяти</h2>
+    <div class="map-wrapper">
+      <div class="map-viewport">
+        <div class="map-content zoom-level-0" id="mapContent">
+          <svg class="map-svg" viewBox="0 0 600 900" id="mapSvg"></svg>
+          <div class="map-nodes" id="mapNodes"></div>
+        </div>
+      </div>
+    </div>
+    <div class="map-legend">
+      <span class="legend-dot legend-dot--available"></span> Доступно
+      <span class="legend-dot legend-dot--done"></span> Пройдено
+      <span class="legend-dot legend-dot--locked"></span> Закрыто
+    </div>
+  </div>
+</section>
+
+  <!-- ЭКРАН 3 — УРОВЕНЬ -->
+  <section class="screen screen--level" data-screen="level">
+    <div class="screen__inner screen__inner--level">
+      <div class="level-header">
+        <span class="level-counter" id="levelCounter"></span>
+        <span class="level-caption" id="levelCaption"></span>
+      </div>
+      <div class="photo-frame" id="level-photo-frame">
+        <img id="level-photo" alt="">
+      </div>
+      <p class="level-date" id="levelDate"></p>
+      <p class="level-question" id="levelQuestion"></p>
+      <div class="level-options" id="levelOptions"></div>
+      <div class="level-answer" id="levelAnswer">
+        <p class="level-memory" id="levelMemory"></p>
+        <button class="btn btn--ghost" id="btn-level-continue">Продолжить путь</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЭКРАН 4 — ПОДАРКИ -->
+  <section class="screen screen--gifts" data-screen="gifts">
+    <div class="screen__inner screen__inner--gifts">
+      <h2 class="title-serif title-serif--sm">Выбери свой подарок</h2>
+      <div class="heart-field" id="heartField"></div>
+      <div class="gifts__reveal" id="giftsReveal">
+        <p class="gifts__reveal-text">Твой выбор сделан</p>
+        <button class="btn btn--primary" id="btn-see-final">Узнать, что внутри</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЭКРАН 5 — ФИНАЛ -->
+  <section class="screen screen--final" data-screen="final">
+    <div class="screen__inner screen__inner--final">
+      <div class="photo-frame photo-frame--final" id="finalPhotoFrame">
+        <img id="finalPhoto" alt="Подарок">
+      </div>
+      <h2 class="title-serif" id="finalTitle"></h2>
+      <p class="final-message" id="finalMessage"></p>
+    </div>
+  </section>
+
+</div>
+
+<canvas id="confetti-canvas" style="position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:50;"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
