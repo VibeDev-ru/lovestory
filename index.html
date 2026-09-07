@@ -22,25 +22,25 @@
     </div>
   </section>
 
-  <!-- ЭКРАН 2 — КАРТА -->
-  <section class="screen screen--map" data-screen="map">
-    <div class="screen__inner screen__inner--map">
-      <h2 class="title-serif title-serif--sm">Карта памяти</h2>
-      <div class="map-wrapper">
-        <div class="map-viewport">
-          <div class="map-content zoom-level-0" id="mapContent">
-            <svg class="map-svg" viewBox="0 0 600 900" id="mapSvg"></svg>
-            <div class="map-nodes" id="mapNodes"></div>
-          </div>
+  <!-- ЭКРАН 2 — КАРТА (АДАПТИВНАЯ) -->
+<section class="screen screen--map" data-screen="map">
+  <div class="screen__inner screen__inner--map">
+    <h2 class="title-serif title-serif--sm">Карта памяти</h2>
+    <div class="map-wrapper" id="mapWrapper">
+      <div class="map-viewport">
+        <div class="map-content zoom-level-0" id="mapContent">
+          <svg class="map-svg" viewBox="0 0 600 900" preserveAspectRatio="xMidYMid meet" id="mapSvg"></svg>
+          <div class="map-nodes" id="mapNodes"></div>
         </div>
       </div>
-      <div class="map-legend">
-        <span class="legend-dot legend-dot--available"></span> Доступно
-        <span class="legend-dot legend-dot--done"></span> Пройдено
-        <span class="legend-dot legend-dot--locked"></span> Закрыто
-      </div>
     </div>
-  </section>
+    <div class="map-legend">
+      <span class="legend-dot legend-dot--available"></span> Доступно
+      <span class="legend-dot legend-dot--done"></span> Пройдено
+      <span class="legend-dot legend-dot--locked"></span> Закрыто
+    </div>
+  </div>
+</section>
 
   <!-- ЭКРАН 3 — УРОВЕНЬ -->
   <section class="screen screen--level" data-screen="level">

@@ -218,24 +218,29 @@ console.log('📦 Загрузка script.js...');
   }
 
   function updateZoom(level) {
-    const mapContent = document.getElementById('mapContent');
-    if (!mapContent) return;
+  const mapContent = document.getElementById('mapContent');
+  if (!mapContent) return;
 
-    mapContent.className = 'map-content';
+  mapContent.className = 'map-content';
 
-    let zoomLevel = 0;
-    if (level >= 0 && level < 2) zoomLevel = 0;
-    else if (level >= 2 && level < 4) zoomLevel = 1;
-    else if (level >= 4 && level < 6) zoomLevel = 2;
-    else if (level >= 6 && level < 8) zoomLevel = 3;
-    else if (level >= 8 && level < 10) zoomLevel = 4;
-    else if (level >= 10 && level < 12) zoomLevel = 5;
-    else if (level >= 12 && level < 14) zoomLevel = 6;
-    else if (level >= 14) zoomLevel = 7;
+  let zoomLevel = 0;
+  if (level >= 0 && level < 2) zoomLevel = 0;
+  else if (level >= 2 && level < 4) zoomLevel = 1;
+  else if (level >= 4 && level < 6) zoomLevel = 2;
+  else if (level >= 6 && level < 8) zoomLevel = 3;
+  else if (level >= 8 && level < 10) zoomLevel = 4;
+  else if (level >= 10 && level < 12) zoomLevel = 5;
+  else if (level >= 12 && level < 14) zoomLevel = 6;
+  else if (level >= 14) zoomLevel = 7;
 
-    mapContent.classList.add(`zoom-level-${zoomLevel}`);
-    console.log(`🔍 Зум установлен на уровень ${zoomLevel} (пройдено: ${level})`);
+  // На телефоне зум меньше, чтобы всё помещалось
+  if (window.innerWidth < 480) {
+    zoomLevel = Math.floor(zoomLevel * 0.6);
   }
+
+  mapContent.classList.add(`zoom-level-${zoomLevel}`);
+  console.log(`🔍 Зум установлен на уровень ${zoomLevel} (пройдено: ${level})`);
+}
 
   // === ОТКРЫТИЕ УРОВНЯ ===
   function openLevel(index) {

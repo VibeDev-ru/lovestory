@@ -367,7 +367,7 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
 @keyframes current-pulse {
   0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 20px rgba(201, 169, 110, 0.4); }
   50% { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 40px rgba(201, 169, 110, 0.8); }
-/* ===== КАРТА С ЗУМОМ ===== */
+/* ===== КАРТА С ЗУМОМ (АДАПТИВНАЯ) ===== */
 .map-wrapper {
   position: relative;
   width: 100%;
@@ -377,6 +377,7 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
   border-radius: 28px;
   box-shadow: inset 0 0 0 1px rgba(201, 169, 110, 0.3), 0 18px 40px -18px rgba(45, 36, 32, 0.3);
   overflow: hidden;
+  touch-action: none;
 }
 
 .map-viewport {
@@ -393,14 +394,110 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
   transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
   transform-origin: center center;
   will-change: transform;
+  position: relative;
 }
 
-/* Начальный зум — видно 4 точки */
+.map-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.map-nodes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.map-node {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.4s var(--ease);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 4px 12px rgba(45, 36, 32, 0.1);
+  z-index: 2;
+}
+
+.map-node:hover:not(.map-node--locked) {
+  transform: translate(-50%, -50%) scale(1.12);
+  box-shadow: 0 6px 20px rgba(201, 169, 110, 0.3);
+}
+
+.map-node--available {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--cream);
+  animation: pulse-node 2s var(--ease) infinite;
+}
+
+@keyframes pulse-node {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 169, 110, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(201, 169, 110, 0); }
+}
+
+.map-node--done {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: var(--cream);
+}
+
+.map-node--locked {
+  border-color: var(--beige);
+  background: var(--beige);
+  color: var(--ink-soft);
+  opacity: 0.6;
+  cursor: default;
+}
+
+.map-node--current {
+  animation: current-pulse 1.2s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(201, 169, 110, 0.6);
+}
+
+@keyframes current-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 20px rgba(201, 169, 110, 0.4); }
+  50% { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 40px rgba(201, 169, 110, 0.8); }
+}
+
+.map-legend {
+  display: flex;
+  gap: 18px;
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.legend-dot--available { background: var(--gold); }
+.legend-dot--done { background: var(--blue); }
+.legend-dot--locked { background: var(--beige); }
+
+/* ===== ЗУМ УРОВНИ ===== */
 .map-content.zoom-level-0 {
   transform: scale(1) translate(0, 0);
 }
-
-/* Зум увеличивается по мере прохождения */
 .map-content.zoom-level-1 {
   transform: scale(1.15) translate(0, -8%);
 }
@@ -442,6 +539,8 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
 }
 .map-content.zoom-level-14 {
   transform: scale(2.15) translate(0, -95%);
+}
+
 /* ===== ТЕЛЕФОНЫ ===== */
 @media (max-width: 480px) {
   .screen__inner {
