@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Карта нашей памяти</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,24 +23,24 @@
   </section>
 
   <!-- ЭКРАН 2 — КАРТА -->
-<section class="screen screen--map" data-screen="map">
-  <div class="screen__inner screen__inner--map">
-    <h2 class="title-serif title-serif--sm">Карта памяти</h2>
-    <div class="map-wrapper">
-      <div class="map-viewport">
-        <div class="map-content zoom-level-0" id="mapContent">
-          <svg class="map-svg" viewBox="0 0 600 900" id="mapSvg"></svg>
-          <div class="map-nodes" id="mapNodes"></div>
+  <section class="screen screen--map" data-screen="map">
+    <div class="screen__inner screen__inner--map">
+      <h2 class="title-serif title-serif--sm">Карта памяти</h2>
+      <div class="map-wrapper">
+        <div class="map-viewport">
+          <div class="map-content zoom-level-0" id="mapContent">
+            <svg class="map-svg" viewBox="0 0 600 900" id="mapSvg"></svg>
+            <div class="map-nodes" id="mapNodes"></div>
+          </div>
         </div>
       </div>
+      <div class="map-legend">
+        <span class="legend-dot legend-dot--available"></span> Доступно
+        <span class="legend-dot legend-dot--done"></span> Пройдено
+        <span class="legend-dot legend-dot--locked"></span> Закрыто
+      </div>
     </div>
-    <div class="map-legend">
-      <span class="legend-dot legend-dot--available"></span> Доступно
-      <span class="legend-dot legend-dot--done"></span> Пройдено
-      <span class="legend-dot legend-dot--locked"></span> Закрыто
-    </div>
-  </div>
-</section>
+  </section>
 
   <!-- ЭКРАН 3 — УРОВЕНЬ -->
   <section class="screen screen--level" data-screen="level">
