@@ -41,23 +41,23 @@ console.log('📦 Загрузка script.js...');
     document.getElementById('btn-start').addEventListener('click', () => { buildMap(); showScreen('map'); });
   }
 
-  // ===== КООРДИНАТЫ ТОЧЕК (ИСПРАВЛЕНЫ) =====
+  // ===== 14 ТОЧЕК (КООРДИНАТЫ ПОДОГНАНЫ ПОД ЛИНИЮ) =====
   const NODE_COORDS = [
-    { x: 280, y: 50 },   // 0
-    { x: 430, y: 80 },   // 1
-    { x: 480, y: 140 },  // 2
-    { x: 460, y: 210 },  // 3
-    { x: 400, y: 270 },  // 4
-    { x: 300, y: 320 },  // 5
-    { x: 190, y: 370 },  // 6
-    { x: 140, y: 440 },  // 7
-    { x: 170, y: 510 },  // 8
-    { x: 240, y: 560 },  // 9
-    { x: 330, y: 600 },  // 10
-    { x: 430, y: 640 },  // 11
-    { x: 440, y: 700 },  // 12
-    { x: 380, y: 760 },  // 13
-    { x: 300, y: 800 }   // 14
+    { x: 280, y: 40 },   // 0
+    { x: 430, y: 70 },   // 1
+    { x: 480, y: 130 },  // 2
+    { x: 470, y: 200 },  // 3
+    { x: 410, y: 260 },  // 4
+    { x: 320, y: 310 },  // 5
+    { x: 220, y: 360 },  // 6
+    { x: 160, y: 430 },  // 7
+    { x: 190, y: 500 },  // 8
+    { x: 260, y: 550 },  // 9
+    { x: 350, y: 590 },  // 10
+    { x: 430, y: 630 },  // 11
+    { x: 440, y: 690 },  // 12
+    { x: 380, y: 750 },  // 13
+    { x: 290, y: 790 }   // 14
   ];
 
   let mapNodes = [];
@@ -72,7 +72,10 @@ console.log('📦 Загрузка script.js...');
     const svg = document.getElementById('mapSvg');
     if (!svg) { console.error('❌ #mapSvg не найден'); return; }
 
-    // Строим линию по координатам
+    // Проверка количества
+    console.log(`📊 Уровней: ${CONFIG.levels.length}, Точек: ${NODE_COORDS.length}`);
+
+    // Строим линию
     let pathD = '';
     NODE_COORDS.forEach((p, i) => {
       if (i === 0) pathD += `M ${p.x} ${p.y}`;
@@ -92,7 +95,7 @@ console.log('📦 Загрузка script.js...');
     bgLine.classList.add('map-line');
     svg.appendChild(bgLine);
 
-    // Активная линия (прогресс)
+    // Активная линия
     const activeLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     activeLine.setAttribute('d', pathD);
     activeLine.setAttribute('stroke', '#C9A96E');
@@ -106,7 +109,7 @@ console.log('📦 Загрузка script.js...');
     activeLine.classList.add('map-line');
     svg.appendChild(activeLine);
 
-    // СОЗДАЁМ КНОПКИ (СТРОГО ПО КООРДИНАТАМ)
+    // СОЗДАЁМ КНОПКИ
     CONFIG.levels.forEach((level, i) => {
       const p = NODE_COORDS[i] || NODE_COORDS[NODE_COORDS.length - 1];
       const node = document.createElement('div');
