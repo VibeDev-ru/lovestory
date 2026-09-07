@@ -104,6 +104,26 @@
     </div>
   </section>
 
+  <!-- ЭКРАН 4.5 — КНИГА ВОСПОМИНАНИЙ -->
+  <section class="screen screen--book" data-screen="book">
+    <div class="screen__inner screen__inner--book">
+      <h2 class="title-serif title-serif--sm">Книга воспоминаний</h2>
+      <div class="book-wrapper" id="bookWrapper">
+        <div class="book" id="book">
+          <div class="book__pages" id="bookPages">
+            <!-- Страницы будут генерироваться через JS -->
+          </div>
+          <div class="book__nav">
+            <button class="btn btn--ghost book__nav-btn" id="bookPrev">←</button>
+            <span class="book__nav-counter" id="bookCounter">1 / 4</span>
+            <button class="btn btn--ghost book__nav-btn" id="bookNext">→</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn--primary" id="bookCloseBtn" style="display:none; margin-top: 16px;">Закрыть книгу</button>
+    </div>
+  </section>
+
   <!-- ЭКРАН 5 — ФИНАЛ -->
   <section class="screen screen--final" data-screen="final">
     <div class="screen__inner screen__inner--final">

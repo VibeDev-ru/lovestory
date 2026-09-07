@@ -11,6 +11,7 @@ console.log('📦 Загрузка script.js...');
     level: document.querySelector('[data-screen="level"]'),
     envelope: document.querySelector('[data-screen="envelope"]'),
     gifts: document.querySelector('[data-screen="gifts"]'),
+    book: document.querySelector('[data-screen="book"]'),
     final: document.querySelector('[data-screen="final"]')
   };
 
@@ -69,7 +70,6 @@ console.log('📦 Загрузка script.js...');
     svg.querySelectorAll('.map-line').forEach(el => el.remove());
     segmentLines = [];
 
-    // Рисуем отрезки
     for (let i = 0; i < NODE_COORDS.length - 1; i++) {
       const p1 = NODE_COORDS[i];
       const p2 = NODE_COORDS[i + 1];
@@ -93,7 +93,6 @@ console.log('📦 Загрузка script.js...');
       segmentLines.push(line);
     }
 
-    // Кнопки
     CONFIG.levels.forEach((level, i) => {
       const p = NODE_COORDS[i] || NODE_COORDS[NODE_COORDS.length - 1];
       const node = document.createElement('div');
@@ -197,7 +196,6 @@ console.log('📦 Загрузка script.js...');
           
           console.log(`Выбран вариант: ${selectedIndex}, Правильный: ${correctIndex}`);
           
-          // Блокируем все кнопки
           document.querySelectorAll('.level-options .btn').forEach(b => b.disabled = true);
           
           if (selectedIndex === correctIndex) {
@@ -342,10 +340,106 @@ console.log('📦 Загрузка script.js...');
   }
 
   document.getElementById('btn-see-final').addEventListener('click', function() {
+    // Сначала показываем книгу, а не финал
+    initBook();
+    showScreen('book');
+  });
+
+  // ===== КНИГА ВОСПОМИНАНИЙ =====
+  const bookData = [
+    {
+      title: "Как всё начиналось",
+      text: 'Наше знакомство началось глупо и смешно — в боте знакомств "ДаВинчик". Просто обменялись парой сообщений, просто остались в контактах. Никто из нас тогда не думал, что это приведёт к чему-то серьёзному. Но потом кто-то перестал быть "чсвшным", и началось настоящее общение. Встречи, прогулки, разговоры, которые ничего не значили — но на самом деле значили всё. Мы привязались друг к другу. Не заметили, не планировали — просто стали теми, без кого уже нельзя.',
+      img: 'images/book1.jpg'
+    },
+    {
+      title: "Твои объятия",
+      text: 'Твои объятия. После долгого дня я хочу только одного — чтобы ты обняла меня. Это лучшее лекарство от всего на свете.',
+      img: 'images/book2.jpg'
+    },
+    {
+      title: "Наши мечты",
+      text: 'Я хочу, чтобы у нас был двухэтажный дом на берегу моря. Большая собака, два кота. Чтобы мы путешествовали, смотрели закаты и просыпались в обнимку. Чтобы у нас была жизнь, о которой мы мечтали.',
+      img: 'images/book3.jpg'
+    },
+    {
+      title: "Я люблю тебя за…",
+      text: '1. Твою улыбку, которая лечит всё.\n2. Твою доброту, когда ты всегда приходишь ко мне на помощь.\n3. Твою нежность, когда ты обнимаешь меня.\n4. Твои глаза, в которых я вижу дом.\n5. То, что ты просто есть.',
+      img: ''
+    }
+  ];
+
+  let bookCurrentPage = 0;
+
+  function initBook() {
+    const container = document.getElementById('bookPages');
+    container.innerHTML = '';
+    
+    bookData.forEach((page, index) => {
+      const div = document.createElement('div');
+      div.className = 'book-page' + (index === 0 ? ' active' : '');
+      div.dataset.page = index;
+      
+      div.innerHTML = `
+        <h3 class="book-page__title">${page.title}</h3>
+        ${page.img ? `<div class="book-page__photo"><img src="${page.img}" alt="${page.title}" loading="lazy"></div>` : ''}
+        <div class="book-page__text">${page.text.replace(/\n/g, '<br>')}</div>
+      `;
+      
+      container.appendChild(div);
+    });
+    
+    bookCurrentPage = 0;
+    updateBookNav();
+    document.getElementById('bookCloseBtn').style.display = 'none';
+  }
+
+  function updateBookNav() {
+    const total = bookData.length;
+    document.getElementById('bookCounter').textContent = `${bookCurrentPage + 1} / ${total}`;
+    document.getElementById('bookPrev').style.display = bookCurrentPage === 0 ? 'none' : 'inline-block';
+    document.getElementById('bookNext').style.display = bookCurrentPage === total - 1 ? 'none' : 'inline-block';
+    
+    // Показываем кнопку "Закрыть книгу" только на последней странице
+    document.getElementById('bookCloseBtn').style.display = bookCurrentPage === total - 1 ? 'inline-block' : 'none';
+  }
+
+  function goToPage(index) {
+    const pages = document.querySelectorAll('.book-page');
+    if (index < 0 || index >= pages.length) return;
+    
+    pages.forEach((p, i) => {
+      p.classList.remove('active', 'exit');
+      if (i === index) {
+        p.classList.add('active');
+      } else if (i < index) {
+        p.classList.add('exit');
+      }
+    });
+    
+    bookCurrentPage = index;
+    updateBookNav();
+  }
+
+  document.getElementById('bookNext').addEventListener('click', function() {
+    if (bookCurrentPage < bookData.length - 1) {
+      goToPage(bookCurrentPage + 1);
+    }
+  });
+
+  document.getElementById('bookPrev').addEventListener('click', function() {
+    if (bookCurrentPage > 0) {
+      goToPage(bookCurrentPage - 1);
+    }
+  });
+
+  document.getElementById('bookCloseBtn').addEventListener('click', function() {
+    // Закрываем книгу и показываем финал
     renderFinal();
     showScreen('final');
   });
 
+  // ===== ФИНАЛ =====
   function renderFinal() {
     const frame = document.getElementById('finalPhotoFrame');
     const img = document.getElementById('finalPhoto');

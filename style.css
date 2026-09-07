@@ -399,7 +399,7 @@ html, body {
   to { opacity: 1; filter: blur(0); }
 }
 
-/* ===== КОНВЕРТ ===== */
+/* ===== СЕКРЕТНЫЙ КОНВЕРТ ===== */
 .screen--envelope .screen__inner {
   max-width: 440px;
   justify-content: center;
@@ -535,6 +535,159 @@ html, body {
   opacity: 0;
 }
 
+/* ===== КНИГА ВОСПОМИНАНИЙ ===== */
+.screen--book .screen__inner {
+  max-width: 520px;
+}
+
+.book-wrapper {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  perspective: 1200px;
+}
+
+.book {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #F7F0E6;
+  border: 2px solid #8B7355;
+  border-radius: 6px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+}
+
+.book__pages {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.book-page {
+  position: absolute;
+  inset: 0;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #FFFDFB;
+  opacity: 0;
+  transform: scale(0.95) rotateY(5deg);
+  transition: all 0.5s ease;
+  pointer-events: none;
+  overflow-y: auto;
+}
+
+.book-page.active {
+  opacity: 1;
+  transform: scale(1) rotateY(0);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.book-page.exit {
+  opacity: 0;
+  transform: scale(0.95) rotateY(-5deg);
+}
+
+.book-page__title {
+  font-family: 'Caveat', cursive;
+  font-size: 28px;
+  color: #3A2A1A;
+  margin-bottom: 8px;
+  border-bottom: 2px solid #C9A96E;
+  padding-bottom: 4px;
+}
+
+.book-page__photo {
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ddd;
+  margin-bottom: 10px;
+  border: 2px solid #D5C8B8;
+  flex-shrink: 0;
+}
+
+.book-page__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book-page__text {
+  font-family: 'Georgia', serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #4A3A2A;
+  text-align: center;
+  max-width: 90%;
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 4px;
+}
+
+.book-page__text ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  font-size: 15px;
+  line-height: 2;
+}
+
+.book-page__text ul li::before {
+  content: "❤ ";
+  color: #C95A5A;
+}
+
+.book__nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: rgba(247, 240, 230, 0.9);
+  border-top: 1px solid #D5C8B8;
+  z-index: 5;
+}
+
+.book__nav-btn {
+  min-width: 44px;
+  padding: 6px 12px;
+  font-size: 18px;
+  background: transparent;
+  border: 1px solid #8B7355;
+  border-radius: 30px;
+  color: #3A2A1A;
+}
+
+.book__nav-btn:hover {
+  background: #E8DDD0;
+}
+
+.book__nav-counter {
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  color: #5A4A3A;
+  min-width: 60px;
+  text-align: center;
+}
+
+#bookCloseBtn {
+  display: none;
+}
+
 /* ===== ПОДАРКИ ===== */
 .heart-field {
   position: relative;
@@ -625,4 +778,27 @@ html, body {
   .envelope-wrapper { width: 220px; height: 160px; }
   .letter__text { font-size: 14px; line-height: 1.6; max-height: 140px; }
   .envelope__heart { font-size: 24px; }
+  .book {
+    aspect-ratio: 3 / 4;
+  }
+  .book-page {
+    padding: 16px 12px;
+  }
+  .book-page__title {
+    font-size: 22px;
+  }
+  .book-page__photo {
+    max-width: 140px;
+  }
+  .book-page__text {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .book-page__text ul {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .book__nav {
+    padding: 8px 12px;
+  }
 }
