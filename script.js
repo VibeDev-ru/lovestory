@@ -43,21 +43,10 @@ console.log('📦 Загрузка script.js...');
 
   // ===== 14 ТОЧЕК В ПРОЦЕНТАХ =====
   const NODE_COORDS = [
-    { x: 50, y: 5 },    // 0
-    { x: 73, y: 8 },    // 1
-    { x: 79, y: 15 },   // 2
-    { x: 78, y: 23 },   // 3
-    { x: 69, y: 30 },   // 4
-    { x: 55, y: 36 },   // 5
-    { x: 39, y: 42 },   // 6
-    { x: 28, y: 50 },   // 7
-    { x: 30, y: 58 },   // 8
-    { x: 40, y: 64 },   // 9
-    { x: 55, y: 69 },   // 10
-    { x: 69, y: 74 },   // 11
-    { x: 73, y: 80 },   // 12
-    { x: 63, y: 87 },   // 13
-    { x: 48, y: 92 }    // 14
+    { x: 50, y: 5 }, { x: 73, y: 8 }, { x: 79, y: 15 }, { x: 78, y: 23 },
+    { x: 69, y: 30 }, { x: 55, y: 36 }, { x: 39, y: 42 }, { x: 28, y: 50 },
+    { x: 30, y: 58 }, { x: 40, y: 64 }, { x: 55, y: 69 }, { x: 69, y: 74 },
+    { x: 73, y: 80 }, { x: 63, y: 87 }, { x: 48, y: 92 }
   ];
 
   let mapNodes = [];
@@ -75,7 +64,6 @@ console.log('📦 Загрузка script.js...');
     const viewBoxWidth = 600;
     const viewBoxHeight = 900;
 
-    // Строим линию в координатах viewBox (та же формула, что и у кнопок, но пересчитанная в пиксели)
     let pathD = '';
     NODE_COORDS.forEach((p, i) => {
       const x = (p.x / 100) * viewBoxWidth;
@@ -86,7 +74,6 @@ console.log('📦 Загрузка script.js...');
 
     svg.querySelectorAll('.map-line').forEach(el => el.remove());
 
-    // Фоновая линия
     const bgLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     bgLine.setAttribute('d', pathD);
     bgLine.setAttribute('stroke', 'rgba(201, 169, 110, 0.25)');
@@ -97,7 +84,6 @@ console.log('📦 Загрузка script.js...');
     bgLine.classList.add('map-line');
     svg.appendChild(bgLine);
 
-    // Активная линия
     const activeLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     activeLine.setAttribute('d', pathD);
     activeLine.setAttribute('stroke', '#C9A96E');
@@ -111,7 +97,6 @@ console.log('📦 Загрузка script.js...');
     activeLine.classList.add('map-line');
     svg.appendChild(activeLine);
 
-    // Кнопки — используют ТЕ ЖЕ координаты в %
     CONFIG.levels.forEach((level, i) => {
       const p = NODE_COORDS[i] || NODE_COORDS[NODE_COORDS.length - 1];
       const node = document.createElement('div');
@@ -187,60 +172,74 @@ console.log('📦 Загрузка script.js...');
 
     if (answerEl) answerEl.classList.remove('is-visible');
 
+    // Убираем старые обработчики, чтобы не накапливались
+    optionsEl.innerHTML = '';
+    optionsEl.style.display = 'none';
+
     if (isQuestion) {
       questionEl.textContent = level.question;
-      optionsEl.innerHTML = '';
+      optionsEl.style.display = 'flex';
+      
       level.options.forEach((opt, i) => {
         const btn = document.createElement('button');
         btn.className = 'btn';
         btn.textContent = opt;
         btn.dataset.index = i;
-        btn.addEventListener('click', () => handleAnswer(i, index, btn));
+        
+        // НАДЁЖНАЯ ЛОГИКА ПРОВЕРКИ
+        btn.addEventListener('click', function(e) {
+          // Если кнопка уже нажата и заблокирована — игнорируем
+          if (this.disabled) return;
+          
+          const selectedIndex = parseInt(this.dataset.index);
+          const correctIndex = level.correct;
+          
+          console.log(`Выбран вариант: ${selectedIndex}, Правильный: ${correctIndex}`);
+          
+          // Блокируем все кнопки
+          document.querySelectorAll('.level-options .btn').forEach(b => b.disabled = true);
+          
+          if (selectedIndex === correctIndex) {
+            // ПРАВИЛЬНЫЙ ОТВЕТ
+            console.log('✅ Правильно!');
+            this.classList.add('btn--correct');
+            memoryEl.textContent = level.memory;
+            answerEl.classList.add('is-visible');
+            continueBtn.style.display = 'inline-block';
+          } else {
+            // НЕПРАВИЛЬНЫЙ ОТВЕТ
+            console.log('❌ Неправильно!');
+            this.classList.add('btn--wrong');
+            
+            // Показываем подсказку
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'level-error-hint';
+            errorDiv.style.cssText = 'color: #C95A5A; font-size: 14px; margin-top: 8px; font-style: italic;';
+            errorDiv.textContent = 'Котенок, не расстраивайся, попробуй еще раз ❤️';
+            this.parentElement.appendChild(errorDiv);
+            
+            // Через 1.5 секунды разблокируем кнопки и убираем подсказку
+            setTimeout(() => {
+              document.querySelectorAll('.level-options .btn').forEach(b => {
+                b.disabled = false;
+                b.classList.remove('btn--wrong');
+              });
+              const hint = document.querySelector('.level-error-hint');
+              if (hint) hint.remove();
+            }, 1500);
+          }
+        });
+        
         optionsEl.appendChild(btn);
       });
-      optionsEl.style.display = 'flex';
-      if (continueBtn) continueBtn.style.display = 'none';
+      
+      continueBtn.style.display = 'none';
     } else {
       questionEl.textContent = '';
       optionsEl.style.display = 'none';
       memoryEl.textContent = level.memory;
       answerEl.classList.add('is-visible');
-      if (continueBtn) {
-        continueBtn.style.display = 'inline-block';
-        continueBtn.textContent = 'Продолжить путь';
-      }
-    }
-  }
-
-  function handleAnswer(selected, levelIndex, btn) {
-    const level = CONFIG.levels[levelIndex];
-    const buttons = document.querySelectorAll('.level-options .btn');
-
-    if (buttons[0] && buttons[0].disabled) return;
-
-    if (selected === level.correct) {
-      buttons.forEach(b => b.disabled = true);
-      buttons.forEach((b, i) => { if (i === level.correct) b.classList.add('btn--correct'); });
-      document.getElementById('levelMemory').textContent = level.memory;
-      document.getElementById('levelAnswer').classList.add('is-visible');
-      const continueBtn = document.getElementById('btn-level-continue');
-      if (continueBtn) { continueBtn.style.display = 'inline-block'; continueBtn.textContent = 'Продолжить путь'; }
-    } else {
-      btn.classList.add('btn--wrong');
-      const errorMsg = document.getElementById('levelError');
-      if (!errorMsg) {
-        const div = document.createElement('div');
-        div.id = 'levelError';
-        div.style.cssText = 'color: #C95A5A; font-size: 14px; margin-top: 8px; font-style: italic;';
-        div.textContent = 'Котенок, не расстраивайся, попробуй еще раз ❤️';
-        btn.parentElement.appendChild(div);
-      } else { errorMsg.style.display = 'block'; }
-      setTimeout(() => {
-        btn.classList.remove('btn--wrong');
-        btn.disabled = false;
-        const errorMsgEl = document.getElementById('levelError');
-        if (errorMsgEl) errorMsgEl.style.display = 'none';
-      }, 1500);
+      continueBtn.style.display = 'inline-block';
     }
   }
 
