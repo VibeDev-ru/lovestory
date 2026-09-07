@@ -6,12 +6,15 @@
 <title>Карта нашей памяти</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="stage" id="stage">
+
+  <!-- ЗВЁЗДЫ -->
+  <div id="stars-container"></div>
 
   <!-- ЭКРАН 1 — СТАРТ -->
   <section class="screen screen--start is-active" data-screen="start">
@@ -66,6 +69,27 @@
     </div>
   </section>
 
+  <!-- ЭКРАН 3.5 — СЕКРЕТНЫЙ КОНВЕРТ -->
+  <section class="screen screen--envelope" data-screen="envelope">
+    <div class="screen__inner screen__inner--envelope">
+      <div class="envelope-wrapper" id="envelopeWrapper">
+        <div class="envelope" id="envelope">
+          <div class="envelope__flap" id="envelopeFlap"></div>
+          <div class="envelope__body">
+            <span class="envelope__heart">❤</span>
+          </div>
+        </div>
+        <div class="letter" id="letter">
+          <div class="letter__content">
+            <p class="letter__text" id="letterText"></p>
+            <button class="btn btn--primary letter__btn" id="letterBtn">Дальше</button>
+          </div>
+        </div>
+      </div>
+      <p class="envelope-hint" id="envelopeHint">Нажми на конверт, чтобы открыть</p>
+    </div>
+  </section>
+
   <!-- ЭКРАН 4 — ПОДАРКИ -->
   <section class="screen screen--gifts" data-screen="gifts">
     <div class="screen__inner screen__inner--gifts">
@@ -98,7 +122,5 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <script src="config.js"></script>
 <script src="script.js"></script>
-<!-- Звёзды на карте -->
-<div id="stars-container" style="position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden;"></div>
 </body>
 </html>

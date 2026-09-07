@@ -9,6 +9,7 @@ console.log('📦 Загрузка script.js...');
     start: document.querySelector('[data-screen="start"]'),
     map: document.querySelector('[data-screen="map"]'),
     level: document.querySelector('[data-screen="level"]'),
+    envelope: document.querySelector('[data-screen="envelope"]'),
     gifts: document.querySelector('[data-screen="gifts"]'),
     final: document.querySelector('[data-screen="final"]')
   };
@@ -41,6 +42,7 @@ console.log('📦 Загрузка script.js...');
     document.getElementById('btn-start').addEventListener('click', () => { buildMap(); showScreen('map'); });
   }
 
+  // ===== 14 ТОЧЕК В ПРОЦЕНТАХ =====
   const NODE_COORDS = [
     { x: 50, y: 5 }, { x: 73, y: 8 }, { x: 79, y: 15 }, { x: 78, y: 23 },
     { x: 69, y: 30 }, { x: 55, y: 36 }, { x: 39, y: 42 }, { x: 28, y: 50 },
@@ -64,11 +66,10 @@ console.log('📦 Загрузка script.js...');
     const viewBoxWidth = 600;
     const viewBoxHeight = 900;
 
-    // Удаляем старые линии
     svg.querySelectorAll('.map-line').forEach(el => el.remove());
     segmentLines = [];
 
-    // Рисуем КАЖДЫЙ ОТРЕЗОК отдельно
+    // Рисуем отрезки
     for (let i = 0; i < NODE_COORDS.length - 1; i++) {
       const p1 = NODE_COORDS[i];
       const p2 = NODE_COORDS[i + 1];
@@ -81,7 +82,7 @@ console.log('📦 Загрузка script.js...');
       const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       const d = `M ${x1} ${y1} L ${x2} ${y2}`;
       line.setAttribute('d', d);
-      line.setAttribute('stroke', 'rgba(201, 169, 110, 0.25)'); // серый по умолчанию
+      line.setAttribute('stroke', 'rgba(201, 169, 110, 0.25)');
       line.setAttribute('stroke-width', '4');
       line.setAttribute('fill', 'none');
       line.setAttribute('stroke-linecap', 'round');
@@ -115,7 +116,6 @@ console.log('📦 Загрузка script.js...');
     const total = CONFIG.levels.length;
     const completed = completedLevels.length;
 
-    // Обновляем кнопки
     mapNodes.forEach((node, i) => {
       node.classList.remove('map-node--available', 'map-node--done', 'map-node--locked', 'map-node--current');
       if (completedLevels.includes(i)) {
@@ -128,21 +128,12 @@ console.log('📦 Загрузка script.js...');
       }
     });
 
-    // Обновляем отрезки
-    // Пройдено отрезков = completed (количество пройденных уровней)
-    // Например: пройден 1 уровень → закрашен отрезок 0→1
-    // пройдено 2 уровня → закрашены отрезки 0→1 и 1→2
     const passedSegments = Math.min(completed, segmentLines.length);
-    
     segmentLines.forEach((line, i) => {
       if (i < passedSegments) {
-        // Закрашен (золотой)
         line.setAttribute('stroke', '#C9A96E');
-        line.setAttribute('stroke-opacity', '1');
       } else {
-        // Не закрашен (серый)
         line.setAttribute('stroke', 'rgba(201, 169, 110, 0.25)');
-        line.setAttribute('stroke-opacity', '1');
       }
     });
     
@@ -206,6 +197,7 @@ console.log('📦 Загрузка script.js...');
           
           console.log(`Выбран вариант: ${selectedIndex}, Правильный: ${correctIndex}`);
           
+          // Блокируем все кнопки
           document.querySelectorAll('.level-options .btn').forEach(b => b.disabled = true);
           
           if (selectedIndex === correctIndex) {
@@ -252,14 +244,52 @@ console.log('📦 Загрузка script.js...');
     const index = currentLevelIndex;
     if (!completedLevels.includes(index)) { completedLevels.push(index); }
     if (completedLevels.length >= CONFIG.levels.length) {
-      initHeartField();
-      showScreen('gifts');
+      showEnvelope();
     } else {
       updateMapProgress();
       showScreen('map');
     }
   });
 
+  // ===== СЕКРЕТНЫЙ КОНВЕРТ =====
+  let envelopeOpened = false;
+
+  function showEnvelope() {
+    console.log('📨 Показываем конверт');
+    envelopeOpened = false;
+    document.getElementById('envelopeFlap').classList.remove('open');
+    document.getElementById('letter').classList.remove('open');
+    document.getElementById('envelopeHint').classList.remove('hidden');
+    document.getElementById('letterBtn').style.display = 'inline-block';
+    
+    document.getElementById('letterText').textContent = 
+      'Анюта, ты прошла весь путь. Каждый уровень — это наша с тобой история. Я хочу, чтобы ты знала: ты — самое лучшее, что случалось со мной. А теперь выбери свой подарок. Я тебя люблю. ❤️';
+    
+    showScreen('envelope');
+  }
+
+  document.getElementById('envelopeWrapper').addEventListener('click', function(e) {
+    if (envelopeOpened) return;
+    if (e.target.classList.contains('letter__btn')) return;
+    
+    console.log('📨 Конверт открыт');
+    envelopeOpened = true;
+    document.getElementById('envelopeFlap').classList.add('open');
+    document.getElementById('envelopeHint').classList.add('hidden');
+    
+    setTimeout(() => {
+      document.getElementById('letter').classList.add('open');
+    }, 500);
+  });
+
+  document.getElementById('letterBtn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    console.log('📨 Переход к подаркам');
+    initHeartField();
+    showScreen('gifts');
+  });
+
+  // ===== ПОДАРКИ =====
   function heartPoint(t) {
     const x = 16 * Math.pow(Math.sin(t), 3);
     const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
@@ -305,7 +335,7 @@ console.log('📦 Загрузка script.js...');
     btn.classList.add('is-chosen');
 
     if (typeof confetti === 'function') {
-      confetti({ particleCount: 80, spread: 70, startVelocity: 32, origin: { y: 0.6 }, colors: ['#C9A96E', '#F3C9C6', '#FFF8F0', '#6E85A6'] });
+      confetti({ particleCount: 100, spread: 80, startVelocity: 35, origin: { y: 0.6 }, colors: ['#C9A96E', '#F3C9C6', '#FFF8F0', '#6E85A6', '#C95A5A'] });
     }
 
     setTimeout(() => { document.getElementById('giftsReveal').classList.add('is-visible'); }, 500);
@@ -324,10 +354,7 @@ console.log('📦 Загрузка script.js...');
     document.getElementById('finalMessage').textContent = CONFIG.finalMessage;
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 DOM загружен');
-    initStart();
-  });
+  // ===== ЗВЁЗДЫ =====
   function createStars() {
     const container = document.getElementById('stars-container');
     if (!container) return;
@@ -343,7 +370,14 @@ console.log('📦 Загрузка script.js...');
       container.appendChild(star);
     }
   }
-  createStars();
+
+  // ===== ЗАПУСК =====
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM загружен');
+    createStars();
+    initStart();
+  });
+
 })();
 
 console.log('✅ script.js загружен');
