@@ -22,7 +22,6 @@
       <h1 class="title-serif" id="start-greeting">Привет, <span class="name"></span></h1>
       <p class="subtitle" id="start-subtitle"></p>
       <div class="screen-footer">
-        <!-- НОВАЯ НЕОНОВАЯ КНОПКА -->
         <button class="btn-start-neon" id="btn-start">
           Начать путешествие
           <span class="icon">
@@ -62,14 +61,9 @@
         <span class="level-counter" id="levelCounter"></span>
         <span class="level-caption" id="levelCaption"></span>
       </div>
-      <!-- СТОПКА ФОТО (ПОЛАРОИД) -->
-      <div class="photo-stack" id="level-photo-stack">
-        <div class="photo-stack-card" id="level-photo-frame">
-          <img id="level-photo" alt="">
-        </div>
-        <div class="photo-stack-card" style="background:#F7F0E6; border:2px dashed #D5C8B8; display:flex; align-items:center; justify-content:center; color:#B8A898; font-size:12px; padding:8px;">
-          <span style="transform:rotate(-5deg);">📸</span>
-        </div>
+      <!-- ФОТО КАК ПОЛАРОИД (ОДНА КАРТОЧКА) -->
+      <div class="polaroid" id="level-photo-frame">
+        <img id="level-photo" alt="">
       </div>
       <p class="level-date" id="levelDate"></p>
       <p class="level-question" id="levelQuestion"></p>
@@ -139,7 +133,7 @@
   <!-- ЭКРАН 5 — ФИНАЛ -->
   <section class="screen screen--final" data-screen="final">
     <div class="screen__inner screen__inner--final">
-      <div class="photo-frame photo-frame--final" id="finalPhotoFrame">
+      <div class="polaroid polaroid--final" id="finalPhotoFrame">
         <img id="finalPhoto" alt="Подарок">
       </div>
       <h2 class="title-serif" id="finalTitle"></h2>
