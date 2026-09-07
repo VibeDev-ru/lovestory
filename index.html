@@ -22,7 +22,15 @@
       <h1 class="title-serif" id="start-greeting">Привет, <span class="name"></span></h1>
       <p class="subtitle" id="start-subtitle"></p>
       <div class="screen-footer">
-        <button class="btn btn--primary" id="btn-start">Начать путешествие</button>
+        <!-- НОВАЯ НЕОНОВАЯ КНОПКА -->
+        <button class="btn-start-neon" id="btn-start">
+          Начать путешествие
+          <span class="icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </span>
+        </button>
       </div>
     </div>
   </section>
@@ -31,7 +39,7 @@
   <section class="screen screen--map" data-screen="map">
     <div class="screen__inner screen__inner--map">
       <h2 class="title-serif title-serif--sm">Карта памяти</h2>
-      <div class="map-wrapper">
+      <div class="map-wrapper neu-card">
         <div class="map-viewport">
           <div class="map-content" id="mapContent">
             <svg class="map-svg" viewBox="0 0 600 900" preserveAspectRatio="xMidYMid meet" id="mapSvg"></svg>
@@ -54,8 +62,14 @@
         <span class="level-counter" id="levelCounter"></span>
         <span class="level-caption" id="levelCaption"></span>
       </div>
-      <div class="photo-frame" id="level-photo-frame">
-        <img id="level-photo" alt="">
+      <!-- СТОПКА ФОТО (ПОЛАРОИД) -->
+      <div class="photo-stack" id="level-photo-stack">
+        <div class="photo-stack-card" id="level-photo-frame">
+          <img id="level-photo" alt="">
+        </div>
+        <div class="photo-stack-card" style="background:#F7F0E6; border:2px dashed #D5C8B8; display:flex; align-items:center; justify-content:center; color:#B8A898; font-size:12px; padding:8px;">
+          <span style="transform:rotate(-5deg);">📸</span>
+        </div>
       </div>
       <p class="level-date" id="levelDate"></p>
       <p class="level-question" id="levelQuestion"></p>
@@ -81,7 +95,7 @@
         </div>
       </div>
       <div class="letter-full" id="letterFull">
-        <div class="letter-full__content">
+        <div class="letter-full__content neu-card">
           <p class="letter-full__text" id="letterText"></p>
           <button class="btn btn--primary letter-full__btn" id="letterBtn">Дальше</button>
         </div>
@@ -109,10 +123,8 @@
     <div class="screen__inner screen__inner--book">
       <h2 class="title-serif title-serif--sm">Книга воспоминаний</h2>
       <div class="book-wrapper" id="bookWrapper">
-        <div class="book" id="book">
-          <div class="book__pages" id="bookPages">
-            <!-- Страницы будут генерироваться через JS -->
-          </div>
+        <div class="book neu-card" id="book">
+          <div class="book__pages" id="bookPages"></div>
           <div class="book__nav">
             <button class="btn btn--ghost book__nav-btn" id="bookPrev">←</button>
             <span class="book__nav-counter" id="bookCounter">1 / 4</span>
