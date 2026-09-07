@@ -249,16 +249,16 @@ console.log('📦 Загрузка script.js...');
     }
   });
 
-  // ===== СЕКРЕТНЫЙ КОНВЕРТ =====
+    // ===== СЕКРЕТНЫЙ КОНВЕРТ =====
   let envelopeOpened = false;
 
   function showEnvelope() {
     console.log('📨 Показываем конверт');
     envelopeOpened = false;
     document.getElementById('envelopeFlap').classList.remove('open');
-    document.getElementById('letter').classList.remove('open');
+    document.getElementById('letterFull').classList.remove('open');
+    document.getElementById('envelopeWrapper').classList.remove('hidden');
     document.getElementById('envelopeHint').classList.remove('hidden');
-    document.getElementById('letterBtn').style.display = 'inline-block';
     
     document.getElementById('letterText').textContent = 
       'Анюта, ты прошла весь путь. Каждый уровень — это наша с тобой история. Я хочу, чтобы ты знала: ты — самое лучшее, что случалось со мной. А теперь выбери свой подарок. Я тебя люблю. ❤️';
@@ -268,7 +268,7 @@ console.log('📦 Загрузка script.js...');
 
   document.getElementById('envelopeWrapper').addEventListener('click', function(e) {
     if (envelopeOpened) return;
-    if (e.target.classList.contains('letter__btn')) return;
+    if (e.target.classList.contains('letter-full__btn')) return;
     
     console.log('📨 Конверт открыт');
     envelopeOpened = true;
@@ -276,15 +276,19 @@ console.log('📦 Загрузка script.js...');
     document.getElementById('envelopeHint').classList.add('hidden');
     
     setTimeout(() => {
-      document.getElementById('letter').classList.add('open');
-    }, 500);
+      document.getElementById('envelopeWrapper').classList.add('hidden');
+      document.getElementById('letterFull').classList.add('open');
+    }, 600);
   });
 
   document.getElementById('letterBtn').addEventListener('click', function(e) {
     e.stopPropagation();
     console.log('📨 Переход к подаркам');
-    initHeartField();
-    showScreen('gifts');
+    document.getElementById('letterFull').classList.remove('open');
+    setTimeout(() => {
+      initHeartField();
+      showScreen('gifts');
+    }, 400);
   });
 
   // ===== ПОДАРКИ =====

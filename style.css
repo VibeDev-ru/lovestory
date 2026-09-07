@@ -403,6 +403,7 @@ html, body {
 .screen--envelope .screen__inner {
   max-width: 440px;
   justify-content: center;
+  position: relative;
 }
 
 .envelope-wrapper {
@@ -411,6 +412,14 @@ html, body {
   height: 200px;
   margin: 0 auto;
   cursor: pointer;
+  z-index: 2;
+  transition: transform 0.5s ease;
+}
+
+.envelope-wrapper.hidden {
+  transform: scale(0.8);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .envelope {
@@ -470,56 +479,65 @@ html, body {
   50% { transform: scale(1.15); }
 }
 
-.letter {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 90%;
-  height: 85%;
-  background: #FFFDFB;
-  border: 1px solid #D5C8B8;
-  border-radius: 4px;
-  transform: translate(-50%, -50%) scale(0.9);
-  opacity: 0;
-  transition: all 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+/* ===== ЛИСТОК НА ВЕСЬ ЭКРАН ===== */
+.letter-full {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  z-index: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(6px);
+  opacity: 0;
   pointer-events: none;
+  transition: opacity 0.6s ease;
 }
 
-.letter.open {
-  transform: translate(-50%, -50%) scale(1);
+.letter-full.open {
   opacity: 1;
-  z-index: 10;
   pointer-events: auto;
 }
 
-.letter__content {
+.letter-full__content {
+  background: #FFFDFB;
+  border: 2px solid #8B7355;
+  border-radius: 16px;
+  padding: 32px 28px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 80vh;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  text-align: center;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  position: relative;
 }
 
-.letter__text {
+.letter-full.open .letter-full__content {
+  transform: scale(1) translateY(0);
+}
+
+.letter-full__text {
   font-family: 'Georgia', serif;
-  font-size: 16px;
+  font-size: clamp(18px, 3vw, 24px);
   line-height: 1.8;
   color: #3A2A1A;
-  margin: 0 0 16px;
-  max-height: 200px;
+  text-align: center;
+  margin: 0 0 24px;
+  width: 100%;
+  max-height: 55vh;
   overflow-y: auto;
-  padding: 0 4px;
+  padding: 0 8px;
 }
 
-.letter__btn {
-  font-size: 14px;
-  padding: 10px 28px;
-  margin-top: 4px;
-  min-width: 120px;
+.letter-full__btn {
+  flex-shrink: 0;
+  min-width: 140px;
 }
 
 .envelope-hint {
@@ -529,6 +547,8 @@ html, body {
   font-style: italic;
   opacity: 0.7;
   transition: opacity 0.5s ease;
+  z-index: 3;
+  position: relative;
 }
 
 .envelope-hint.hidden {
