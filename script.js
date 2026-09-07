@@ -41,7 +41,7 @@ console.log('📦 Загрузка script.js...');
     document.getElementById('btn-start').addEventListener('click', () => { buildMap(); showScreen('map'); });
   }
 
-  // ===== 14 ТОЧЕК В ПРОЦЕНТАХ (АДАПТИВНАЯ КАРТА) =====
+  // ===== 14 ТОЧЕК В ПРОЦЕНТАХ =====
   const NODE_COORDS = [
     { x: 50, y: 5 },    // 0
     { x: 73, y: 8 },    // 1
@@ -72,16 +72,14 @@ console.log('📦 Загрузка script.js...');
     const svg = document.getElementById('mapSvg');
     if (!svg) { console.error('❌ #mapSvg не найден'); return; }
 
-    // Получаем размеры контейнера
-    const rect = svg.getBoundingClientRect();
-    const width = rect.width || 600;
-    const height = rect.height || 900;
+    const viewBoxWidth = 600;
+    const viewBoxHeight = 900;
 
-    // Строим линию в ПРОЦЕНТАХ от размера карты
+    // Строим линию в координатах viewBox (та же формула, что и у кнопок, но пересчитанная в пиксели)
     let pathD = '';
     NODE_COORDS.forEach((p, i) => {
-      const x = (p.x / 100) * width;
-      const y = (p.y / 100) * height;
+      const x = (p.x / 100) * viewBoxWidth;
+      const y = (p.y / 100) * viewBoxHeight;
       if (i === 0) pathD += `M ${x} ${y}`;
       else pathD += ` L ${x} ${y}`;
     });
@@ -99,7 +97,7 @@ console.log('📦 Загрузка script.js...');
     bgLine.classList.add('map-line');
     svg.appendChild(bgLine);
 
-    // Активная линия (прогресс)
+    // Активная линия
     const activeLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     activeLine.setAttribute('d', pathD);
     activeLine.setAttribute('stroke', '#C9A96E');
@@ -113,7 +111,7 @@ console.log('📦 Загрузка script.js...');
     activeLine.classList.add('map-line');
     svg.appendChild(activeLine);
 
-    // Кнопки в ПРОЦЕНТАХ
+    // Кнопки — используют ТЕ ЖЕ координаты в %
     CONFIG.levels.forEach((level, i) => {
       const p = NODE_COORDS[i] || NODE_COORDS[NODE_COORDS.length - 1];
       const node = document.createElement('div');
