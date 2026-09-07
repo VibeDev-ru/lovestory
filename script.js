@@ -41,23 +41,23 @@ console.log('📦 Загрузка script.js...');
     document.getElementById('btn-start').addEventListener('click', () => { buildMap(); showScreen('map'); });
   }
 
-  // ===== 14 ТОЧЕК (КООРДИНАТЫ ПОДОГНАНЫ ПОД ЛИНИЮ) =====
+  // ===== 14 ТОЧЕК В ПРОЦЕНТАХ (АДАПТИВНАЯ КАРТА) =====
   const NODE_COORDS = [
-    { x: 280, y: 40 },   // 0
-    { x: 430, y: 70 },   // 1
-    { x: 480, y: 130 },  // 2
-    { x: 470, y: 200 },  // 3
-    { x: 410, y: 260 },  // 4
-    { x: 320, y: 310 },  // 5
-    { x: 220, y: 360 },  // 6
-    { x: 160, y: 430 },  // 7
-    { x: 190, y: 500 },  // 8
-    { x: 260, y: 550 },  // 9
-    { x: 350, y: 590 },  // 10
-    { x: 430, y: 630 },  // 11
-    { x: 440, y: 690 },  // 12
-    { x: 380, y: 750 },  // 13
-    { x: 290, y: 790 }   // 14
+    { x: 50, y: 5 },    // 0
+    { x: 73, y: 8 },    // 1
+    { x: 79, y: 15 },   // 2
+    { x: 78, y: 23 },   // 3
+    { x: 69, y: 30 },   // 4
+    { x: 55, y: 36 },   // 5
+    { x: 39, y: 42 },   // 6
+    { x: 28, y: 50 },   // 7
+    { x: 30, y: 58 },   // 8
+    { x: 40, y: 64 },   // 9
+    { x: 55, y: 69 },   // 10
+    { x: 69, y: 74 },   // 11
+    { x: 73, y: 80 },   // 12
+    { x: 63, y: 87 },   // 13
+    { x: 48, y: 92 }    // 14
   ];
 
   let mapNodes = [];
@@ -72,14 +72,18 @@ console.log('📦 Загрузка script.js...');
     const svg = document.getElementById('mapSvg');
     if (!svg) { console.error('❌ #mapSvg не найден'); return; }
 
-    // Проверка количества
-    console.log(`📊 Уровней: ${CONFIG.levels.length}, Точек: ${NODE_COORDS.length}`);
+    // Получаем размеры контейнера
+    const rect = svg.getBoundingClientRect();
+    const width = rect.width || 600;
+    const height = rect.height || 900;
 
-    // Строим линию
+    // Строим линию в ПРОЦЕНТАХ от размера карты
     let pathD = '';
     NODE_COORDS.forEach((p, i) => {
-      if (i === 0) pathD += `M ${p.x} ${p.y}`;
-      else pathD += ` L ${p.x} ${p.y}`;
+      const x = (p.x / 100) * width;
+      const y = (p.y / 100) * height;
+      if (i === 0) pathD += `M ${x} ${y}`;
+      else pathD += ` L ${x} ${y}`;
     });
 
     svg.querySelectorAll('.map-line').forEach(el => el.remove());
@@ -95,7 +99,7 @@ console.log('📦 Загрузка script.js...');
     bgLine.classList.add('map-line');
     svg.appendChild(bgLine);
 
-    // Активная линия
+    // Активная линия (прогресс)
     const activeLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     activeLine.setAttribute('d', pathD);
     activeLine.setAttribute('stroke', '#C9A96E');
@@ -109,7 +113,7 @@ console.log('📦 Загрузка script.js...');
     activeLine.classList.add('map-line');
     svg.appendChild(activeLine);
 
-    // СОЗДАЁМ КНОПКИ
+    // Кнопки в ПРОЦЕНТАХ
     CONFIG.levels.forEach((level, i) => {
       const p = NODE_COORDS[i] || NODE_COORDS[NODE_COORDS.length - 1];
       const node = document.createElement('div');
@@ -117,8 +121,8 @@ console.log('📦 Загрузка script.js...');
       if (i === 0) node.classList.add('map-node--available');
       if (completedLevels.includes(i)) node.classList.add('map-node--done');
       node.textContent = i + 1;
-      node.style.left = p.x + 'px';
-      node.style.top = p.y + 'px';
+      node.style.left = p.x + '%';
+      node.style.top = p.y + '%';
       node.dataset.index = i;
       node.addEventListener('click', () => openLevel(i));
       container.appendChild(node);
