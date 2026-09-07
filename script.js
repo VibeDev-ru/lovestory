@@ -348,7 +348,7 @@ console.log('📦 Загрузка script.js...');
     showScreen('book');
   });
 
-  // ===== КНИГА ВОСПОМИНАНИЙ (С МАЛЕНЬКИМИ ФОТО) =====
+  // ===== КНИГА ВОСПОМИНАНИЙ =====
   const bookData = [
     {
       title: "Как всё начиналось",
@@ -387,7 +387,7 @@ console.log('📦 Загрузка script.js...');
       if (page.img) {
         photoHTML = `
           <div class="polaroid book-polaroid">
-            <img src="${page.img}" alt="${page.title}" loading="lazy" style="max-width:200px; height:auto; aspect-ratio:4/3; display:block; border:2px solid #D5C8B8; border-radius:2px;">
+            <img src="${page.img}" alt="${page.title}" loading="lazy">
           </div>
         `;
       }
@@ -472,13 +472,13 @@ console.log('📦 Загрузка script.js...');
     const yearWord = years % 10 === 1 && years % 100 !== 11 ? 'год' : 
                      (years % 10 >= 2 && years % 10 <= 4 && !(years % 100 >= 12 && years % 100 <= 14) ? 'года' : 'лет');
     const monthWord = months % 10 === 1 && months % 100 !== 11 ? 'месяц' : 
-                      (months % 10 >= 2 && months % 10 <= 4 && !(months % 100 >= 12 && months % 100 <= 14) ? 'месяца' : 'месяцев');
+                      (months % 10 >= 2 && months % 10 <= 4 && !(years % 100 >= 12 && years % 100 <= 14) ? 'месяца' : 'месяцев');
     const dayWord = days % 10 === 1 && days % 100 !== 11 ? 'день' : 
-                    (days % 10 >= 2 && days % 10 <= 4 && !(days % 100 >= 12 && days % 100 <= 14) ? 'дня' : 'дней');
+                    (days % 10 >= 2 && days % 10 <= 4 && !(years % 100 >= 12 && years % 100 <= 14) ? 'дня' : 'дней');
     
     let result = '';
     if (years > 0) result += `${years} ${yearWord} `;
-    if (months > 0) result += `${months} ${monthWord} `;
+    if (months > 0 && months < 10) result += `${months} ${monthWord} `;
     result += `${days} ${dayWord}`;
     
     return result;
@@ -522,7 +522,27 @@ console.log('📦 Загрузка script.js...');
     createStars();
     initStart();
   });
+/* ===== РАЗМЕР ФОТО В КНИГЕ ===== */
+.book-polaroid {
+  max-width: 180px !important;
+  margin: 0 auto 8px !important;
+}
 
+.book-polaroid img {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 4 / 3 !important;
+  display: block !important;
+  border: 2px solid #D5C8B8 !important;
+  border-radius: 2px !important;
+}
+
+/* На телефоне поменьше */
+@media (max-width: 480px) {
+  .book-polaroid {
+    max-width: 120px !important;
+  }
+}
 })();
 
 console.log('✅ script.js загружен');
