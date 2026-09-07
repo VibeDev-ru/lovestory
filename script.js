@@ -348,7 +348,7 @@ console.log('📦 Загрузка script.js...');
     showScreen('book');
   });
 
-  // ===== КНИГА ВОСПОМИНАНИЙ =====
+  // ===== КНИГА ВОСПОМИНАНИЙ (С МАЛЕНЬКИМИ ФОТО) =====
   const bookData = [
     {
       title: "Как всё начиналось",
@@ -383,9 +383,18 @@ console.log('📦 Загрузка script.js...');
       div.className = 'book-page' + (index === 0 ? ' active' : '');
       div.dataset.page = index;
       
+      let photoHTML = '';
+      if (page.img) {
+        photoHTML = `
+          <div class="polaroid book-polaroid">
+            <img src="${page.img}" alt="${page.title}" loading="lazy" style="max-width:100px; height:auto; aspect-ratio:4/3; display:block; border:2px solid #D5C8B8; border-radius:2px;">
+          </div>
+        `;
+      }
+      
       div.innerHTML = `
         <h3 class="book-page__title">${page.title}</h3>
-        ${page.img ? `<div class="book-page__photo"><img src="${page.img}" alt="${page.title}" loading="lazy"></div>` : ''}
+        ${photoHTML}
         <div class="book-page__text">${page.text.replace(/\n/g, '<br>')}</div>
       `;
       
