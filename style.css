@@ -695,6 +695,10 @@ html, body {
   flex-shrink: 0;
 }
 
+<<<<<<< HEAD
+=======
+/* ===== РАЗМЕР ФОТО В КНИГЕ — 300px ===== */
+>>>>>>> 7e3383902db318ea37ce8c40ff4fa334e57489be
 .book-polaroid {
   max-width: 300px !important;
   margin: 0 auto 8px !important;
