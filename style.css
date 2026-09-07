@@ -104,88 +104,47 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
 }
 .btn--ghost:hover { background: rgba(201, 169, 110, 0.12); transform: translateY(-2px); }
 
-/* ===== КАРТА ===== */
+/* ===== КАРТА (ОГРАНИЧЕНИЕ ПО ВЫСОТЕ) ===== */
+.screen__inner--map {
+  max-width: 560px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  max-height: 90vh;
+}
 
 .map-wrapper {
   position: relative;
   width: 100%;
   max-width: 560px;
   aspect-ratio: 560 / 840;
+  max-height: 70vh;
   background: rgba(255, 248, 240, 0.6);
   border-radius: 28px;
   box-shadow: inset 0 0 0 1px rgba(201, 169, 110, 0.3), 0 18px 40px -18px rgba(45, 36, 32, 0.3);
   overflow: hidden;
+  touch-action: none;
 }
 
-.map-svg { width: 100%; height: 100%; display: block; }
-
-.map-nodes {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.map-viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 28px;
+  position: relative;
 }
 
-.map-node {
-  position: absolute;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid var(--gold);
-  background: var(--cream);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink-soft);
-  cursor: pointer;
-  pointer-events: auto;
-  transition: all 0.4s var(--ease);
-  transform: translate(-50%, -50%);
-  box-shadow: 0 4px 12px rgba(45, 36, 32, 0.1);
-  z-index: 2;
+.map-content {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform-origin: center center;
+  will-change: transform;
+  position: relative;
 }
-
-.map-node:hover:not(.map-node--locked) {
-  transform: translate(-50%, -50%) scale(1.12);
-  box-shadow: 0 6px 20px rgba(201, 169, 110, 0.3);
-}
-
-.map-node--available {
-  border-color: var(--gold);
-  background: var(--gold);
-  color: var(--cream);
-  animation: pulse-node 2s var(--ease) infinite;
-}
-
-@keyframes pulse-node {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 169, 110, 0.4); }
-  50% { box-shadow: 0 0 0 10px rgba(201, 169, 110, 0); }
-}
-
-.map-node--done { border-color: var(--blue); background: var(--blue); color: var(--cream); }
-.map-node--locked { border-color: var(--beige); background: var(--beige); color: var(--ink-soft); opacity: 0.6; cursor: default; }
-
-.map-legend {
-  display: flex;
-  gap: 18px;
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--ink-soft);
-}
-
-.legend-dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-right: 4px;
-  vertical-align: middle;
-}
-.legend-dot--available { background: var(--gold); }
-.legend-dot--done { background: var(--blue); }
-.legend-dot--locked { background: var(--beige); }
-
 /* ===== УРОВЕНЬ ===== */
 
 .screen__inner--level { max-width: 420px; padding-top: 2vh; }
@@ -581,5 +540,26 @@ html, body { height: 100%; overflow: hidden; background: var(--cream); color: va
   }
   .map-wrapper {
     border-radius: 16px;
+  }
+/* ===== ФИКСИРОВАННЫЙ ФУТЕР ДЛЯ КНОПОК ===== */
+.screen-footer {
+  margin-top: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.screen-footer .btn {
+  min-width: 200px;
+}
+
+/* На телефоне кнопки на всю ширину */
+@media (max-width: 480px) {
+  .screen-footer {
+    margin-top: 16px;
+  }
+  .screen-footer .btn {
+    min-width: unset;
+    width: 100%;
   }
 }

@@ -197,42 +197,46 @@ console.log('📦 Загрузка script.js...');
   }
 
   function updateMapProgress() {
-    console.log('📊 updateMapProgress() вызвана');
-    const total = CONFIG.levels.length;
-    const completed = completedLevels.length;
-    console.log(`📊 Прогресс: ${completed}/${total}`);
+  console.log('📊 updateMapProgress() вызвана');
+  const total = CONFIG.levels.length;
+  const completed = completedLevels.length;
+  console.log(`📊 Прогресс: ${completed}/${total}`);
 
-    mapNodes.forEach((node, i) => {
-      node.classList.remove('map-node--available', 'map-node--done', 'map-node--locked', 'map-node--current');
-      if (completedLevels.includes(i)) {
-        node.classList.add('map-node--done');
-      } else if (i === completed) {
-        node.classList.add('map-node--available');
-        if (i === completed) {
-          node.classList.add('map-node--current');
-        }
-      } else {
-        node.classList.add('map-node--locked');
+  mapNodes.forEach((node, i) => {
+    node.classList.remove('map-node--available', 'map-node--done', 'map-node--locked', 'map-node--current');
+    if (completedLevels.includes(i)) {
+      node.classList.add('map-node--done');
+    } else if (i === completed) {
+      node.classList.add('map-node--available');
+      if (i === completed) {
+        node.classList.add('map-node--current');
       }
-    });
-
-    const activeLine = document.getElementById('mapActiveLine');
-    if (activeLine) {
-      const progress = completed / total;
-      const totalLength = 2000;
-      const offset = totalLength - progress * totalLength;
-      activeLine.setAttribute('stroke-dashoffset', offset);
-      console.log(`📊 Линия обновлена: ${Math.round(progress * 100)}%`);
+    } else {
+      node.classList.add('map-node--locked');
     }
+  });
 
-    updateZoom(completed);
+  const activeLine = document.getElementById('mapActiveLine');
+  if (activeLine) {
+    const progress = completed / total;
+    const totalLength = 2000;
+    const offset = totalLength - progress * totalLength;
+    activeLine.setAttribute('stroke-dashoffset', offset);
+    console.log(`📊 Линия обновлена: ${Math.round(progress * 100)}%`);
   }
 
-  function updateZoom(level) {
+  updateZoom(completed);
+}
+
+function updateZoom(level) {
   const mapContent = document.getElementById('mapContent');
   if (!mapContent) return;
-
   mapContent.className = 'map-content';
+
+  if (window.innerWidth < 480) {
+    mapContent.classList.add('zoom-level-0');
+    return;
+  }
 
   let zoomLevel = 0;
   if (level >= 0 && level < 2) zoomLevel = 0;
@@ -244,13 +248,7 @@ console.log('📦 Загрузка script.js...');
   else if (level >= 12 && level < 14) zoomLevel = 6;
   else if (level >= 14) zoomLevel = 7;
 
-  // На телефоне зум меньше, чтобы всё помещалось
-  if (window.innerWidth < 480) {
-    zoomLevel = Math.floor(zoomLevel * 0.6);
-  }
-
   mapContent.classList.add(`zoom-level-${zoomLevel}`);
-  console.log(`🔍 Зум установлен на уровень ${zoomLevel} (пройдено: ${level})`);
 }
 
   // === ОТКРЫТИЕ УРОВНЯ ===

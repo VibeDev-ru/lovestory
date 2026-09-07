@@ -18,29 +18,31 @@
     <div class="screen__inner">
       <h1 class="title-serif" id="start-greeting">Привет, <span class="name"></span></h1>
       <p class="subtitle" id="start-subtitle"></p>
-      <button class="btn btn--primary" id="btn-start">Начать путешествие</button>
+      <div class="screen-footer">
+        <button class="btn btn--primary" id="btn-start">Начать путешествие</button>
+      </div>
     </div>
   </section>
 
-  <!-- ЭКРАН 2 — КАРТА (АДАПТИВНАЯ) -->
-<section class="screen screen--map" data-screen="map">
-  <div class="screen__inner screen__inner--map">
-    <h2 class="title-serif title-serif--sm">Карта памяти</h2>
-    <div class="map-wrapper" id="mapWrapper">
-      <div class="map-viewport">
-        <div class="map-content zoom-level-0" id="mapContent">
-          <svg class="map-svg" viewBox="0 0 600 900" preserveAspectRatio="xMidYMid meet" id="mapSvg"></svg>
-          <div class="map-nodes" id="mapNodes"></div>
+  <!-- ЭКРАН 2 — КАРТА -->
+  <section class="screen screen--map" data-screen="map">
+    <div class="screen__inner screen__inner--map">
+      <h2 class="title-serif title-serif--sm">Карта памяти</h2>
+      <div class="map-wrapper" id="mapWrapper">
+        <div class="map-viewport">
+          <div class="map-content zoom-level-0" id="mapContent">
+            <svg class="map-svg" viewBox="0 0 600 900" preserveAspectRatio="xMidYMid meet" id="mapSvg"></svg>
+            <div class="map-nodes" id="mapNodes"></div>
+          </div>
         </div>
       </div>
+      <div class="map-legend">
+        <span class="legend-dot legend-dot--available"></span> Доступно
+        <span class="legend-dot legend-dot--done"></span> Пройдено
+        <span class="legend-dot legend-dot--locked"></span> Закрыто
+      </div>
     </div>
-    <div class="map-legend">
-      <span class="legend-dot legend-dot--available"></span> Доступно
-      <span class="legend-dot legend-dot--done"></span> Пройдено
-      <span class="legend-dot legend-dot--locked"></span> Закрыто
-    </div>
-  </div>
-</section>
+  </section>
 
   <!-- ЭКРАН 3 — УРОВЕНЬ -->
   <section class="screen screen--level" data-screen="level">
@@ -57,7 +59,9 @@
       <div class="level-options" id="levelOptions"></div>
       <div class="level-answer" id="levelAnswer">
         <p class="level-memory" id="levelMemory"></p>
-        <button class="btn btn--ghost" id="btn-level-continue">Продолжить путь</button>
+        <div class="screen-footer">
+          <button class="btn btn--ghost" id="btn-level-continue">Продолжить путь</button>
+        </div>
       </div>
     </div>
   </section>
@@ -69,7 +73,9 @@
       <div class="heart-field" id="heartField"></div>
       <div class="gifts__reveal" id="giftsReveal">
         <p class="gifts__reveal-text">Твой выбор сделан</p>
-        <button class="btn btn--primary" id="btn-see-final">Узнать, что внутри</button>
+        <div class="screen-footer">
+          <button class="btn btn--primary" id="btn-see-final">Узнать, что внутри</button>
+        </div>
       </div>
     </div>
   </section>
