@@ -49,7 +49,7 @@ console.log('📦 Загрузка script.js...');
   ];
 
   let mapNodes = [];
-  let activeLine = null;
+  let segmentLines = [];
 
   function buildMap() {
     console.log('🗺️ buildMap()');
@@ -64,41 +64,33 @@ console.log('📦 Загрузка script.js...');
     const viewBoxWidth = 600;
     const viewBoxHeight = 900;
 
-    // Строим путь
-    let pathD = '';
-    NODE_COORDS.forEach((p, i) => {
-      const x = (p.x / 100) * viewBoxWidth;
-      const y = (p.y / 100) * viewBoxHeight;
-      if (i === 0) pathD += `M ${x} ${y}`;
-      else pathD += ` L ${x} ${y}`;
-    });
-
+    // Удаляем старые линии
     svg.querySelectorAll('.map-line').forEach(el => el.remove());
+    segmentLines = [];
 
-    // Фоновая линия (всегда видна)
-    const bgLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    bgLine.setAttribute('d', pathD);
-    bgLine.setAttribute('stroke', 'rgba(201, 169, 110, 0.25)');
-    bgLine.setAttribute('stroke-width', '4');
-    bgLine.setAttribute('fill', 'none');
-    bgLine.setAttribute('stroke-linecap', 'round');
-    bgLine.setAttribute('stroke-linejoin', 'round');
-    bgLine.classList.add('map-line');
-    svg.appendChild(bgLine);
-
-    // Активная линия (прогресс)
-    activeLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    activeLine.setAttribute('d', pathD);
-    activeLine.setAttribute('stroke', '#C9A96E');
-    activeLine.setAttribute('stroke-width', '4');
-    activeLine.setAttribute('fill', 'none');
-    activeLine.setAttribute('stroke-linecap', 'round');
-    activeLine.setAttribute('stroke-linejoin', 'round');
-    activeLine.setAttribute('stroke-dasharray', '2000');
-    activeLine.setAttribute('stroke-dashoffset', '2000');
-    activeLine.id = 'mapActiveLine';
-    activeLine.classList.add('map-line');
-    svg.appendChild(activeLine);
+    // Рисуем КАЖДЫЙ ОТРЕЗОК отдельно
+    for (let i = 0; i < NODE_COORDS.length - 1; i++) {
+      const p1 = NODE_COORDS[i];
+      const p2 = NODE_COORDS[i + 1];
+      
+      const x1 = (p1.x / 100) * viewBoxWidth;
+      const y1 = (p1.y / 100) * viewBoxHeight;
+      const x2 = (p2.x / 100) * viewBoxWidth;
+      const y2 = (p2.y / 100) * viewBoxHeight;
+      
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const d = `M ${x1} ${y1} L ${x2} ${y2}`;
+      line.setAttribute('d', d);
+      line.setAttribute('stroke', 'rgba(201, 169, 110, 0.25)'); // серый по умолчанию
+      line.setAttribute('stroke-width', '4');
+      line.setAttribute('fill', 'none');
+      line.setAttribute('stroke-linecap', 'round');
+      line.setAttribute('stroke-linejoin', 'round');
+      line.classList.add('map-line');
+      line.dataset.segment = i;
+      svg.appendChild(line);
+      segmentLines.push(line);
+    }
 
     // Кнопки
     CONFIG.levels.forEach((level, i) => {
@@ -123,7 +115,7 @@ console.log('📦 Загрузка script.js...');
     const total = CONFIG.levels.length;
     const completed = completedLevels.length;
 
-    // Обновляем состояние кнопок
+    // Обновляем кнопки
     mapNodes.forEach((node, i) => {
       node.classList.remove('map-node--available', 'map-node--done', 'map-node--locked', 'map-node--current');
       if (completedLevels.includes(i)) {
@@ -136,20 +128,25 @@ console.log('📦 Загрузка script.js...');
       }
     });
 
-    // ОБНОВЛЯЕМ АКТИВНУЮ ЛИНИЮ
-    if (activeLine) {
-      // Вычисляем, сколько отрезков пройдено
-      const totalSegments = total - 1; // количество отрезков между точками
-      const completedSegments = Math.min(completed, totalSegments);
-      
-      // Длина одного отрезка в процентах от общей длины
-      const segmentLength = 2000 / totalSegments;
-      const offset = 2000 - (completedSegments * segmentLength);
-      
-      activeLine.setAttribute('stroke-dashoffset', offset);
-      
-      console.log(`📊 Линия: пройдено ${completed}/${total} уровней, offset: ${offset}`);
-    }
+    // Обновляем отрезки
+    // Пройдено отрезков = completed (количество пройденных уровней)
+    // Например: пройден 1 уровень → закрашен отрезок 0→1
+    // пройдено 2 уровня → закрашены отрезки 0→1 и 1→2
+    const passedSegments = Math.min(completed, segmentLines.length);
+    
+    segmentLines.forEach((line, i) => {
+      if (i < passedSegments) {
+        // Закрашен (золотой)
+        line.setAttribute('stroke', '#C9A96E');
+        line.setAttribute('stroke-opacity', '1');
+      } else {
+        // Не закрашен (серый)
+        line.setAttribute('stroke', 'rgba(201, 169, 110, 0.25)');
+        line.setAttribute('stroke-opacity', '1');
+      }
+    });
+    
+    console.log(`📊 Пройдено уровней: ${completed}, закрашено отрезков: ${passedSegments}`);
   }
 
   function openLevel(index) {
